@@ -1,0 +1,26 @@
+## Bot deplyment + cold wallet restoration ##
+
+
+--Wallet restoration + RPC--
+
+-> to get all the binaries you need start the sh file 'monero.sh' with 'sh monero.sh' in it's folder
+
+[generating keys from viewkey over Tor can be very slow and cause problems, in case of errors remove 'torsocks' at the beginning and use a clearnet node.
+Keep in mind to remove all stagenet flags if you are using mainnet]
+-> type 'torsocks ./monero-wallet-cli --stagenet --daemon-address=<your node>:<your node's port> --untrusted-daemon --generate-from-view-key <your private view key>'
+
+-> follow monero-wallet-cli instructions and let it fully sync
+
+-> after sync close it. Now in the 'monero_wallet' you now should have 3 key files all named as your private viewkey
+
+
+--Bot deployment--
+
+[Remember to change all the variables at line 8 to 11 like: node, node port, wallet name (it's your private viewkey) and wallet password]
+
+-> start it typing 'sh start.sh' to create virtual environment, install dependecies, create database, run the bot and the RPC all at the same time
+
+The RPC doesn't instantly starts, give it some time. It needs to fully load the wallet keys and fire up the server. 
+
+	
+	Check if bot works :)
