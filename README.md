@@ -79,7 +79,7 @@ The RPC doesn't instantly starts, give it some time. It needs to fully load the 
 
 ## TODO
 
-- Use `tx-notify` to notify every incoming transaction
+- ~~Use `tx-notify` to notify every incoming transaction~~
 
 - Improve rounding for shown donated amount in a proposal
 
