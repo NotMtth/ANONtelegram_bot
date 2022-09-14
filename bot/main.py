@@ -1,5 +1,6 @@
 import logging
 
+import peewee
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ConversationHandler, filters, ContextTypes, \
     CallbackQueryHandler, MessageHandler
