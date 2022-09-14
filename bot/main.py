@@ -6,11 +6,11 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ConversationHandler
 
 import settings
 from bot import commands
-from bot.models import Funding, db
+from bot import restricted
 from bot.api import API
+from bot.models import Funding, db
 from bot.rpc import wallet
 from bot.utils import Utils
-from bot import restricted
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

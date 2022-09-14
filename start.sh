@@ -40,7 +40,7 @@ screen -S anon_rpc -X stuff 'cd monero_wallet/\n'
 
 #stagenet recommended (remove --stagenet for mainnet use)
 # remove `torsocks` at the beginning if you want to use a standard node 
-screen -S anon_rpc -X stuff "torsocks ./monero-wallet-rpc --stagenet --daemon-address=${NODE}:${PORT} --untrusted-daemon --rpc-bind-port 28088 --disable-rpc-login --wallet-file ${WALLET}.keys --password '${PASSWORD}'\n"
+screen -S anon_rpc -X stuff "torsocks ./monero-wallet-rpc --stagenet --daemon-address=${NODE}:${PORT} --untrusted-daemon --rpc-bind-port 28088 --disable-rpc-login --wallet-file ${WALLET}.keys --password '${PASSWORD}' --tx-notify notify.sh\n"
 
 echo "${G}[+] rpc started${NOCOLOR}"
 

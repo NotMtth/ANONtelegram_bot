@@ -21,3 +21,6 @@ SPECIAL_CHARS = os.environ.get('SPECIAL_CHARS', '[@_!#$%^&*()<>?/\|}{~:]')
 
 PICO_XMR = os.environ.get('PICO_XMR', Decimal(0.000000000001))
 
+ANON_GROUP = os.environ.get('ANON_GROUP')
+
+MONERO_CHAN = 'https://www.monerochan.art/commissions/mememe_bikini.gif'
