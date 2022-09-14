@@ -83,6 +83,8 @@ The RPC doesn't instantly starts, give it some time. It needs to fully load the 
 
 - Improve rounding for shown donated amount in a proposal
 
+- Error handling when writing database (ex: unique data errors etc...)
+
 ## Author
 
 - [@NotMtth](https://github.com/NotMtth) - notmtth.xyz
