@@ -129,17 +129,17 @@ async def close_conv(update: Update, context: ContextTypes.DEFAULT_TYPE):  # don
 
         raise Exception('Empty amount!')
 
-    # sub = wallet.new_address(0)
+    sub = wallet.new_address(0)
 
-    # sub_address, address_index = sub['address'], sub['address_index']
+    sub_address, address_index = sub['address'], sub['address_index']
 
     current_row = Funding.select().where(Funding.id == update.effective_user.id).order_by(Funding.time.desc()).get()
     with db.atomic():
         current_row.feature = feature_name
         current_row.amount = amount
         current_row.more_info = more_info
-        # current_row.sub_address = sub_address
-        # current_row.address_index = address_index
+        current_row.sub_address = sub_address
+        current_row.address_index = address_index
         current_row.save()
 
     await api.send_message('Proposal submitted!')

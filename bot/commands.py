@@ -103,8 +103,8 @@ async def fund_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     buttons = []
 
     for fund in Funding.select():
-        # if fund.feature and Utils.check_funded(fund.amount, fund.address_index):
-        buttons.append([InlineKeyboardButton(text=f'➤ {fund.feature}', callback_data=f'➤{fund.feature}')])
+        if fund.feature and Utils.check_funded(fund.amount, fund.address_index):
+            buttons.append([InlineKeyboardButton(text=f'➤ {fund.feature}', callback_data=f'➤{fund.feature}')])
 
     if not buttons:
         return await api.send_message('<i>Every proposal is funded for now...</i>')
