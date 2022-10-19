@@ -18,11 +18,13 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-application = ApplicationBuilder().token(settings.TOKEN).proxy_url(settings.PROXY).build()
+application = ApplicationBuilder().token(settings.TOKEN).build()  # .proxy_url(settings.PROXY)
 start_handler = CommandHandler('start', commands.start_command)
 help_handler = CommandHandler('help', commands.help_command)
 fund_handler = CommandHandler('fund', commands.fund_command)
 submit_funding_handler = CommandHandler('add', commands.submit_funding_command)
+cleanup_handler = CommandHandler('clean', commands.db_cleanup)
+delete_handler = CommandHandler('delete', commands.delete_proposal)
 donate_handler = CommandHandler('donate', commands.donate_command)
 
 GET_FEATURE, GET_AMOUNT, GET_INFO = range(1, 4)
@@ -127,20 +129,20 @@ async def close_conv(update: Update, context: ContextTypes.DEFAULT_TYPE):  # don
 
         raise Exception('Empty amount!')
 
-    sub = wallet.new_address(0)
+    # sub = wallet.new_address(0)
 
-    sub_address, address_index = sub['address'], sub['address_index']
+    # sub_address, address_index = sub['address'], sub['address_index']
 
     current_row = Funding.select().where(Funding.id == update.effective_user.id).order_by(Funding.time.desc()).get()
     with db.atomic():
         current_row.feature = feature_name
         current_row.amount = amount
         current_row.more_info = more_info
-        current_row.sub_address = sub_address
-        current_row.address_index = address_index
+        # current_row.sub_address = sub_address
+        # current_row.address_index = address_index
         current_row.save()
 
-    await api.send_message('Proposal closed and submitted!')
+    await api.send_message('Proposal submitted!')
 
     return END
 
@@ -154,20 +156,18 @@ async def fund_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     feature = update.callback_query.data[1:]
     fund = Funding.select().where(Funding.feature == feature).get()
 
-    buttons = [[InlineKeyboardButton(text=f'Back ⮨', callback_data=f'back')]]
+    buttons = [[InlineKeyboardButton(text=f'‹ Back', callback_data=f'back')]]
 
     qr_code = Utils.gen_qrcode(fund.sub_address)
 
     # print(round(fund.))
 
     await api.send_photo(qr_code.getvalue(), caption=f'''
-Feature: <b>{fund.feature}</b>
-Amount: <b>{Utils.get_funded_balance(fund.address_index)} of {fund.amount} XMR</b>
-More info: <b>{fund.more_info}</b>
-Address: <code>{fund.sub_address}</code>
+› Feature: <b>{fund.feature}</b>
+› Amount: <b>{Utils.get_funded_balance(fund.address_index)} of {fund.amount} XMR</b> 
+› More info: <b>{fund.more_info}</b>
+› Address: <code>{fund.sub_address}</code>
     ''', reply_markup=InlineKeyboardMarkup(buttons))
-
-    return END
 
 
 async def fund_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):  # back to fund main menu

@@ -14,17 +14,17 @@ async def proposal_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = context.user_data
 
     buttons = [
-        [InlineKeyboardButton(text=f'+Edit feature name', callback_data='feature')],
-        [InlineKeyboardButton(text=f'+Edit amount', callback_data='amount')],
-        [InlineKeyboardButton(text=f'+Edit more info', callback_data='info')],
-        [InlineKeyboardButton(text=f'✓Done', callback_data='done')]
+        [InlineKeyboardButton(text=f'+ Edit feature name', callback_data='feature')],
+        [InlineKeyboardButton(text=f'+ Edit amount', callback_data='amount')],
+        [InlineKeyboardButton(text=f'+ Edit more info', callback_data='info')],
+        [InlineKeyboardButton(text=f'✓ Done', callback_data='done')]
     ]
 
     await api.send_message(f'''
 <b>Edit proposal</b>
-➥ Feature: <code>{user_data['name']}</code>
-➥ Amount: <code>{user_data['amount']} XMR</code>
-➥ More info: <code>{user_data['info']}</code>
+› Feature: <code>{user_data['name']}</code>
+› Amount: <code>{user_data['amount']} XMR</code>
+› More info: <code>{user_data['info']}</code>
     ''', reply_markup=InlineKeyboardMarkup(buttons))
 
 
@@ -38,6 +38,31 @@ async def submit_funding_command(update: Update, context: ContextTypes.DEFAULT_T
     user_data['name'], user_data['amount'], user_data['info'] = None, None, None
 
     return await proposal_menu(update, context)
+
+
+@restricted
+async def db_cleanup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    api = API(update, context)
+
+    if Funding.select():
+        for proposal in Funding.select():
+            Funding.delete().where(Funding.feature == proposal.feature).execute()
+        return await api.send_message('Proposals cleaned!')
+
+    await api.send_message('There are no proposals!')
+
+
+@restricted
+async def delete_proposal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    api = API(update, context)
+    feature = update.message.text
+    feature = feature.replace('/delete ', '')
+
+    if Funding.select().where(Funding.feature == feature):
+        Funding.delete().where(Funding.feature == feature).execute()
+        return await api.send_message('Proposal deleted!')
+
+    await api.send_message('Proposal not found!')
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -78,8 +103,8 @@ async def fund_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     buttons = []
 
     for fund in Funding.select():
-        if fund.feature and Utils.check_funded(fund.amount, fund.address_index):
-            buttons.append([InlineKeyboardButton(text=f'➤ {fund.feature}', callback_data=f'➤{fund.feature}')])
+        # if fund.feature and Utils.check_funded(fund.amount, fund.address_index):
+        buttons.append([InlineKeyboardButton(text=f'➤ {fund.feature}', callback_data=f'➤{fund.feature}')])
 
     if not buttons:
         return await api.send_message('<i>Every proposal is funded for now...</i>')

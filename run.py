@@ -1,6 +1,6 @@
 from bot.main import application, start_handler, help_handler, fund_handler, submit_funding_handler, \
     feature_handler, amount_handler, info_handler, done_handler, fund_menu_handler, fund_back_menu_handler, \
-    donate_handler
+    donate_handler, cleanup_handler, delete_handler
 
 
 def _setup_database():
@@ -17,6 +17,8 @@ if __name__ == '__main__':
     application.add_handler(help_handler)
     application.add_handler(fund_handler)
     application.add_handler(submit_funding_handler)
+    application.add_handler(cleanup_handler)
+    application.add_handler(delete_handler)
     application.add_handler(donate_handler)
 
     application.add_handler(feature_handler)

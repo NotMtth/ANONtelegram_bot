@@ -75,11 +75,17 @@ The RPC doesn't instantly starts, give it some time. It needs to fully load the 
 
 - `/add`, add new funding proposal __[restricted to admins]__
 
+- `/clean`, cleans the whole database __[restricted to admins]__
+
+- `/delete <proposal_name>`, delete a proposal __[restricted to admins]__
+
 - `/donate`, donation screen
 
 ## TODO
 
 - ~~Use `tx-notify` to notify every incoming transaction~~
+
+- Make deployment better (working on dockers)
 
 - Improve rounding for shown donated amount in a proposal
 
