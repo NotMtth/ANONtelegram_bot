@@ -2,7 +2,7 @@ anyio==3.6.1
 APScheduler==3.9.1
 backports.zoneinfo==0.2.1
 cachetools==5.2.0
-certifi==2022.9.24
+certifi==2022.12.07
 charset-normalizer==2.1.1
 h11==0.12.0
 httpcore==0.15.0
